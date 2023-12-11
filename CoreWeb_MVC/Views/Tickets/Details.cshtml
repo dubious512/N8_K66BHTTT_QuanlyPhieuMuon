@@ -1,0 +1,76 @@
+﻿@model CoreWeb_MVC.Models.Ticket
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+	<div>
+		<h4>Ticket</h4>
+		<hr />
+		<dl class="row">
+			<dt class="col-sm-2">
+				@Html.DisplayNameFor(model => model.ticket_id)
+			</dt>
+			<dd class="col-sm-10">
+				@Html.DisplayFor(model => model.ticket_id)
+			</dd>
+			<dt class="col-sm-2">
+				@Html.DisplayNameFor(model => model.user_id)
+			</dt>
+			<dd class="col-sm-10">
+				@Html.DisplayFor(model => model.user_id)
+			</dd>
+			<dt class="col-sm-2">
+				@Html.DisplayNameFor(model => model.book_name)
+			</dt>
+			<dd class="col-sm-10">
+				@Html.DisplayFor(model => model.book_name)
+			</dd>
+			<dt class="col-sm-2">
+				@Html.DisplayNameFor(model => model.Date)
+			</dt>
+			<dd class="col-sm-10">
+				@Html.DisplayFor(model => model.Date)
+			</dd>
+			<dt class="col-sm-2">
+				Họ và Tên
+			</dt>
+			<dd class="col-sm-10">
+				@ViewData["user_name"]
+			</dd>
+			<dt class="col-sm-2">
+				Số điện thoại
+			</dt>
+			<dd class="col-sm-10">
+				@ViewData["user_phone"]
+			</dd>			
+			<dt class="col-sm-2">
+				Email
+			</dt>
+			<dd class="col-sm-10">
+				@ViewData["user_email"]
+			</dd>
+			<dt class="col-sm-2">
+				Trạng thái
+			</dt>
+			<dd class="col-sm-10 expiration-status @(ViewData["expiration_status"] == "Hết hạn" ? "expired" : "")">
+				@ViewData["expiration_status"]
+			</dd>
+		</dl>
+	</div>
+	<div>
+		<div class="col-md-6">
+			<a asp-action="Index" class="btn btn-primary">
+				<i class="fa-solid fa-rotate-left"></i>
+			</a>
+		</div>
+	</div>
+
+<script>
+	
+</script>
+
+
+

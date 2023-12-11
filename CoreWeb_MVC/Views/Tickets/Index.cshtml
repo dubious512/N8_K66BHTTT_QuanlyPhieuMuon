@@ -1,0 +1,83 @@
+﻿@model IEnumerable<CoreWeb_MVC.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <form asp-action="Index" method="get">
+        <div class="form-group">
+            <label for="_ticketId">
+                <i class="fa-solid fa-user-magnifying-glass"></i>
+            </label>
+            <input type="text" name="_ticketId"
+                   value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-action="Index" class="btn btn-info">
+        <i class="fa-solid fa-list"></i>
+    </a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ticket_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.user_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.book_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                <a asp-action="Create" class="btn btn-sm btn-success">
+                    <i class="fa-regular fa-plus"></i> New
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ticket_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.book_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                    <form asp-action="Delete" asp-route-id="@item.ID">
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Edit" asp-route-id="@item.ID"
+                               class="btn btn-warning">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.ID"
+                               class="btn btn-light">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <button type="submit" class=" btn btn-danger"
+                                    onclick="return confirm ('Có chắc bạn muốn xóa?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </form>
+        </tr>
+}
+    </tbody>
+</table>
+

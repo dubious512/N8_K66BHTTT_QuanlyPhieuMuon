@@ -1,0 +1,120 @@
+﻿@model CoreWeb_MVC.Models.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Ticket</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ticket_id" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="ticket_id" class="form-control" />
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="generateRandomTicketId()">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </button>
+                    </span>
+                </div>
+                <span asp-validation-for="ticket_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="user_id" class="control-label"></label>
+                <input asp-for="user_id" class="form-control" />
+                <span asp-validation-for="user_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="book_name" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="book_name" class="form-control" />
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="toggleBookList()">
+                            <i class="fa-solid fa-list"></i>
+                        </button>
+                    </span>
+                </div>
+                <span asp-validation-for="book_name" class="text-danger"></span>
+                <ul id="bookNamesList"></ul>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-create">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="Index" class="btn btn-primary">View All</a>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function generateRandomTicketId() {
+        // Tạo một chuỗi ngẫu nhiên với cụm từ "N8"
+        var randomTicketId = 'VNUF' + Math.random().toString(36).substr(2, 6);
+
+        // Gán giá trị ngẫu nhiên cho input ticket_id
+        document.getElementById('ticket_id').value = randomTicketId;
+    }
+</script>
+<script>
+    var bookListVisible = false;
+
+    function toggleBookList() {
+        var bookNamesList = document.getElementById("bookNamesList");
+
+        if (bookListVisible) {
+            bookNamesList.innerHTML = "";
+        } else {
+            fetch("/api/books")
+                .then(response => response.json())
+                .then(data => {
+                    bookNamesList.innerHTML = "";
+
+                    for (var i = 0; i < data.length; i++) {
+                        var bookName = data[i].book_name;
+
+                        var li = document.createElement("li");
+                        li.textContent = bookName;
+
+                        li.addEventListener("click", function () {
+                            var bookIdInput = document.getElementById("book_name");
+                            var selectedBooks = bookIdInput.value.split(',');
+
+                            if (selectedBooks.includes(this.textContent)) {
+                                var index = selectedBooks.indexOf(this.textContent);
+                                selectedBooks.splice(index, 1);
+                            } else {
+                                selectedBooks.push(this.textContent);
+                            }
+
+                            bookIdInput.value = selectedBooks.join(',');
+                        });
+
+                        bookNamesList.appendChild(li);
+                    }
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                });
+        }
+
+        bookListVisible = !bookListVisible;
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
